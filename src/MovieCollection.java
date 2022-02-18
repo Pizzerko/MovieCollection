@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class MovieCollection
@@ -165,7 +166,51 @@ public class MovieCollection
 
     private void searchCast()
     {
-        String[] actors = new String;
+        String[] cast;
+        ArrayList<String> actors = new ArrayList<String>();
+        ArrayList<String> actorsGiven = new ArrayList<String>();
+        for(int i = 0; i < movies.size(); i++) {
+            cast = movies.get(i).getCast().split("\\|");
+            String mem = cast[i];
+            for(int b = 0; b < cast.length; b++) {
+                if(mem.equals(actors.get(b))) {
+                }
+                else {
+                    actors.add(mem);
+                }
+            }
+       }
+        System.out.print("Enter an actor: ");
+        String answer = scanner.nextLine();
+        answer = answer.toLowerCase();
+
+        for(int i = 0; i < actors.size(); i++) {
+
+            String act = actors.get(i);
+            act = act.toLowerCase();
+
+            if(act.indexOf(answer) != -1) {
+                actorsGiven.add(actors.get(i));
+            }
+        }
+        for(int i = 0; i < actorsGiven.size(); i++) {
+            String actor = actorsGiven.get(i);
+            int choiceNum = i + 1;
+            System.out.println("" + choiceNum + ". " + actor)
+        }
+        System.out.println("Which actor would you like to learn more about?");
+        System.out.print("Enter number: ");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        String chosen = actorsGiven.get(choice - 1);
+        for(int i = 0; i < movies.size(); i++) {
+            String act = movies.get(i).getCast();
+            act = act.toLowerCase();
+            if(act.indexOf(chosen) != -1) {
+                 
+        }
 
     }
 
@@ -190,7 +235,7 @@ public class MovieCollection
             {
                 //add the Movie object to the results list
                 results.add(movies.get(i));
-                System.out.println("hi");
+
             }
         }
 
