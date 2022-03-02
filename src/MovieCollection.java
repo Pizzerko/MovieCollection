@@ -350,31 +350,37 @@ public class MovieCollection
 
     private void listHighestRated()
     {
-        double high;
-        boolean putIn = false;
-        ArrayList<Movie> highest = new ArrayList<Movie>();
+        ArrayList<Double> highest = new ArrayList<Double>();
+        ArrayList<Movie> highMovies = new ArrayList<Movie>();
         for (Movie movie : movies) {
-            putIn = false;
-            high = movie.getUserRating();
-            if(highest.size() == 0) {
-                highest.add(movie);
+            if (!highMovies.contains(movie)) {
+                highest.add(movie.getUserRating());
             }
-            else {
-                for(int i = 0; i < highest.size(); i++) {
-                    if(high > highest.get(i).getUserRating()) {
-                        highest.add(i, movie);
-                        putIn = true;
+        }
+        for(int i = 1; i < highest.size(); i++) {
+            double temp = highest.get(i);
+            int possibleIndex = i;
+            while(possibleIndex > 0 && temp > highest.get(possibleIndex - 1)) {
+                highest.set(possibleIndex, highest.get(possibleIndex - 1));
+                possibleIndex--;
+            }
+            highest.set(possibleIndex, temp);
+        }
+
+        for(int i = 0; i < highest.size(); i++) {
+            for (Movie movie : movies) {
+                if (movie.getUserRating() == highest.get(i)) {
+                    if (!highMovies.contains(movie)) {
+                        highMovies.add(movie);
                     }
-                }
-                if(!putIn) {
-                    highest.add(movie);
                 }
             }
         }
-        for(int i = 0; i < highest.size(); i++) {
-            Movie spec = highest.get(i);
+
+        for(int i = 0; i < 50; i++) {
+            String spec = highMovies.get(i).getTitle();
             int choiceNum = i + 1;
-            double rating = highest.get(i).getUserRating();
+            double rating = highest.get(i);
             System.out.println("" + choiceNum + ". " + spec + ", " + rating);
         }
         System.out.println("Which movie would you like to learn more about?");
@@ -382,7 +388,7 @@ public class MovieCollection
         int choic = scanner.nextInt();
         scanner.nextLine();
 
-        Movie selectedMovie = highest.get(choic - 1);
+        Movie selectedMovie = highMovies.get(choic - 1);
 
         displayMovieInfo(selectedMovie);
 
@@ -393,6 +399,48 @@ public class MovieCollection
 
     private void listHighestRevenue()
     {
+        ArrayList<Integer> highest = new ArrayList<Integer>();
+        ArrayList<Movie> highMovies = new ArrayList<Movie>();
+        for (Movie movie : movies) {
+                highest.add(movie.getRevenue());
+        }
+        for(int i = 1; i < highest.size(); i++) {
+            int temp = highest.get(i);
+            int possibleIndex = i;
+            while(possibleIndex > 0 && temp > highest.get(possibleIndex - 1)) {
+                highest.set(possibleIndex, highest.get(possibleIndex - 1));
+                possibleIndex--;
+            }
+            highest.set(possibleIndex, temp);
+        }
+
+        for(int i = 0; i < highest.size(); i++) {
+            for (Movie movie : movies) {
+                if (movie.getRevenue() == highest.get(i)) {
+                    if (!highMovies.contains(movie)) {
+                        highMovies.add(movie);
+                    }
+                }
+            }
+        }
+
+        for(int i = 0; i < 50; i++) {
+            String spec = highMovies.get(i).getTitle();
+            int choiceNum = i + 1;
+            double rating = highest.get(i);
+            System.out.println("" + choiceNum + ". " + spec + ", " + rating);
+        }
+        System.out.println("Which movie would you like to learn more about?");
+        System.out.print("Enter number: ");
+        int choic = scanner.nextInt();
+        scanner.nextLine();
+
+        Movie selectedMovie = highMovies.get(choic - 1);
+
+        displayMovieInfo(selectedMovie);
+
+        System.out.println("\n ** Press Enter to Return to Main Menu **");
+        scanner.nextLine();
 
     }
 
